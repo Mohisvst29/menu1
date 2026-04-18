@@ -48,26 +48,33 @@ export default function ImageUpload({ value, onChange, label = 'صورة', folde
   const upload = useCallback(async (file: File) => {
     setUploading(true);
     try {
+      console.log('Starting compression and upload for:', file.name);
       const compressedBlob = await compressImage(file);
+      console.log('Compressed size:', compressedBlob.size, 'Original size:', file.size);
+
       const fd = new FormData();
       fd.append('file', compressedBlob, 'image.jpg');
       fd.append('folder', folder);
+      
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       
       let data;
       try {
         data = await res.json();
       } catch (e) {
+        console.error('Failed to parse JSON response:', e);
         throw new Error(`خطأ في السيرفر: ${res.status}`);
       }
 
       if (data.url) {
+        console.log('Image uploaded successfully');
         onChange(data.url);
       } else {
+        console.error('Upload API returned error:', data.error);
         alert('فشل رفع الصورة: ' + (data.error || 'خطأ غير معروف'));
       }
     } catch (err: any) {
-      console.error('Upload catch:', err);
+      console.error('Upload catch block:', err);
       alert('فشل رفع الصورة: ' + err.message);
     } finally {
       setUploading(false);
