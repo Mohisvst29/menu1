@@ -8,6 +8,8 @@ const SiteConfigSchema = new Schema({
   logoSize: Number,
   fontFamily: String,
   coverImage: String,
+  coverImages: [{ type: String }],
+  coverVideo: String,
   whatsappNumber: String,
   address: String,
   workingHours: String,

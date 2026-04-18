@@ -16,6 +16,8 @@ export interface SiteConfig {
   logoSize?: number; // Size percentage from 1 to 150
   fontFamily?: string; // Font type choice
   coverImage: string;
+  coverImages?: string[];
+  coverVideo?: string;
   whatsappNumber: string;
   address: string;
   workingHours: string;

@@ -20,20 +20,74 @@ export default function CoverSection({ site }: CoverSectionProps) {
     translateText(site.description).then(setDesc);
   }, [site.businessName, site.description, translateText]);
 
+  // Extract all valid media
+  const media: { type: 'video' | 'image'; url: string }[] = [];
+  if (site.coverVideo) media.push({ type: 'video', url: site.coverVideo });
+  const images = site.coverImages 
+    ? site.coverImages.filter(Boolean) 
+    : (site.coverImage ? [site.coverImage] : []);
+  images.forEach(img => {
+    media.push({ type: 'image', url: img });
+  });
+
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (media.length <= 1) return;
+    const current = media[activeIndex];
+    let timer: NodeJS.Timeout;
+
+    // For images, we use a 5 second timer. For video, we rely on the onEnded event.
+    if (current && current.type === 'image') {
+      timer = setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % media.length);
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [activeIndex, media]);
+
+  const handleVideoEnded = () => {
+    if (media.length > 1) {
+      setActiveIndex((prev) => (prev + 1) % media.length);
+    }
+  };
+
   return (
     <section className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
-      {/* Background */}
-      {site.coverImage ? (
+      {/* Background Media */}
+      {media.length > 0 ? (
         <div className="absolute inset-0">
-          <Image
-            src={site.coverImage}
-            alt="cover"
-            fill
-            className="object-cover transition-transform duration-[20s] ease-linear scale-105 hover:scale-110"
-            priority
-          />
+          {media.map((item, index) => {
+            const isActive = index === activeIndex;
+            return (
+              <div 
+                key={index} 
+                className={`absolute inset-0 transition-opacity duration-1000 ${isActive ? 'opacity-100 z-0' : 'opacity-0 -z-10'}`}
+              >
+                {item.type === 'image' ? (
+                  <Image
+                    src={item.url}
+                    alt={`cover-${index}`}
+                    fill
+                    className={`object-cover transition-transform duration-[20s] ease-linear ${isActive ? 'scale-110' : 'scale-100'}`}
+                    priority={index === 0}
+                  />
+                ) : (
+                  <video 
+                    src={item.url} 
+                    autoPlay={isActive} 
+                    muted 
+                    playsInline 
+                    onEnded={isActive ? handleVideoEnded : undefined}
+                    className="w-full h-full object-cover"
+                  />
+                )}
+              </div>
+            );
+          })}
           {/* Refined gradient overlay for better text readability and premium feel */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[var(--background)]" />
+          <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/80 via-black/40 to-[var(--background)] pointer-events-none" />
         </div>
       ) : (
         <div

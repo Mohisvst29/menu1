@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Sidebar from '@/components/admin/Sidebar';
 import ImageUpload from '@/components/admin/ImageUpload';
+import VideoUpload from '@/components/admin/VideoUpload';
 import type { SiteConfig } from '@/types';
 
 const COLORS = [
@@ -75,6 +76,15 @@ export default function SettingsPage() {
       ...prev,
       [parent]: { ...prev[parent], [key]: value }
     }));
+  };
+
+  const updateCoverImageArray = (index: number, url: string) => {
+    setSite((prev) => {
+      if (!prev) return prev;
+      const newCoverImages = [...(prev.coverImages || [])];
+      newCoverImages[index] = url;
+      return { ...prev, coverImages: newCoverImages };
+    });
   };
 
   const updateTheme = (key: string, value: string) => {
@@ -212,9 +222,15 @@ export default function SettingsPage() {
                 </div>
               </div>
 
-              <div className="pt-2 border-t grid grid-cols-1 sm:grid-cols-2 gap-6" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-                <ImageUpload label="شعار المشروع" value={site.logo} onChange={(url) => update('logo', url)} folder="logos" />
-                <ImageUpload label="صورة الغلاف" value={site.coverImage} onChange={(url) => update('coverImage', url)} folder="covers" />
+              <div className="pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+                <p className="text-sm font-medium mb-4" style={{ color: '#9ca3af' }}>الصور والشعار</p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <ImageUpload label="شعار المشروع" value={site.logo} onChange={(url) => update('logo', url)} folder="logos" />
+                  <ImageUpload label="صورة الغلاف 1 (الرئيسية)" value={site.coverImages?.[0] || site.coverImage || ''} onChange={(url) => updateCoverImageArray(0, url)} folder="covers" />
+                  <ImageUpload label="صورة الغلاف 2" value={site.coverImages?.[1] || ''} onChange={(url) => updateCoverImageArray(1, url)} folder="covers" />
+                  <ImageUpload label="صورة الغلاف 3" value={site.coverImages?.[2] || ''} onChange={(url) => updateCoverImageArray(2, url)} folder="covers" />
+                  <VideoUpload label="فيديو الغلاف" value={site.coverVideo || ''} onChange={(url) => update('coverVideo', url)} folder="covers" />
+                </div>
               </div>
             </div>
           )}

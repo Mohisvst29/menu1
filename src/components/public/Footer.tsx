@@ -11,62 +11,70 @@ interface FooterProps {
 export default function Footer({ site }: FooterProps) {
   const { t } = useLang();
 
-  const waLink = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent('مرحباً، أريد الاستفسار')}`;
+  const waLink = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(
+    t('whatsapp', UI_LABELS)
+  )}`;
 
   const socials = [
     {
       key: 'instagram', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+          <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
         </svg>
       ), url: site.instagram,
     },
     {
-      key: 'facebook', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M22.675 0H1.325C.593 0 0 .593 0 1.325v21.351C0 23.407.593 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.73 0 1.323-.593 1.323-1.325V1.325C24 .593 23.407 0 22.675 0z"/>
-        </svg>
-      ), url: site.facebook,
-    },
-    {
       key: 'twitter', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>
         </svg>
       ), url: site.twitter,
     },
     {
+      key: 'facebook', icon: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+        </svg>
+      ), url: site.facebook,
+    },
+    {
       key: 'snapchat', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M11.96 1.054c-1.353 0-2.61.34-3.666 1.01-.6.38-.985.9-1.077 1.492-.092.593.12 1.146.593 1.55.705.597 1.758.89 2.9.89 1.144 0 2.195-.293 2.9-.89.473-.404.685-.957.593-1.55-.092-.592-.477-1.112-1.077-1.492-1.056-.67-2.313-1.01-3.666-1.01zm-3.87 3.551c-.69.873-1.037 2.05-1.037 3.513 0 1.25-.138 2.29-.408 3.124-.268.834-.674 1.55-1.22 2.146l-.286.305v.006c-.66.711-1.34 1.46-1.895 2.102-.32.378-.445.86-.33 1.266.115.405.474.717.92.79l3.05.464c.24.037.45.163.564.38a1.27 1.27 0 0 1-.027 1.196 6.308 6.308 0 0 1-1.162 1.233c-.267.214-.424.526-.403.82.02.293.208.577.493.744.975.58 2.302.795 3.935.795h1.364c1.633 0 2.96-.215 3.935-.795.285-.167.472-.45.493-.744.02-.294-.136-.606-.403-.82a6.308 6.308 0 0 1-1.162-1.233 1.27 1.27 0 0 1-.027-1.196c.113-.217.324-.343.564-.38l3.05-.464c.446-.073.805-.385.92-.79.115-.406-.01-.888-.33-1.266-.554-.642-1.234-1.39-1.895-2.102v-.006l-.286-.305c-.546-.596-.95-1.312-1.22-2.146-.27-.834-.408-1.874-.408-3.124 0-1.463-.347-2.64-1.037-3.513-.7-.887-1.764-1.332-3.167-1.332S8.79 3.718 8.09 4.605zm8.173 1.096l-.994.498.497.994.995-.497-.498-.995zm-8.527-.497l.498.995.994-.498-.497-.994-.995.497z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M11.95 2.05h.1c2 0 3.79 1.14 4.54 2.94a4.93 4.93 0 0 1 .41 1.96v.04l.11.02c1.07.16 2.03.66 2.76 1.44a5.1 5.1 0 0 1 1.09 2.17c.18.66.1 1.25-.26 1.81-.3.46-.77.78-1.34 1.02a6.95 6.95 0 0 1-2.9.43l-.38-.02.16.32c.3.61.64 1.22 1.02 1.83.69 1.1 1.62 1.95 2.72 2.5a.73.73 0 0 1 .4.66c0 .4-.33.72-.73.72-.25 0-.54-.08-.79-.17-.74-.26-1.5-.66-2.22-1.12a14.78 14.78 0 0 1-2.61-2.26 27.24 27.24 0 0 0-1.74-2.1c-.8-1-1.63-1.66-2.5-2.02l-.24-.09-.23.1c-1.38.56-2.66 1.5-3.82 2.82-1.14 1.3-2 2.8-2.62 4.49A10.66 10.66 0 0 0 2.22 22a.75.75 0 0 1-.72-.75A.75.75 0 0 1 1.9 20.6c.72-1.18 1.6-2.22 2.6-3.1.92-.81 1.92-1.48 2.96-1.92l.14-.06-.11-.1A11.33 11.33 0 0 1 5.06 13a7.35 7.35 0 0 1-3-1.14c-.65-.43-1-1.01-1-1.65 0-.84.5-1.57 1.4-2.07.72-.4 1.57-.64 2.45-.73l.23-.02a5.45 5.45 0 0 1 .91-.1c.36 0 .7.03 1.05.08 0 0 .04-.51.04-.51A4.95 4.95 0 0 1 7.6 4.9C8.35 3.1 10.1 2 11.95 2z"/>
         </svg>
       ), url: site.snapchat,
     },
     {
       key: 'tiktok', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1 .05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/>
         </svg>
       ), url: site.tiktok,
     },
     {
       key: 'youtube', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M2.5 7.1C2 8.6 2 12 2 12s0 3.4.5 4.9a2.5 2.5 0 0 0 1.6 1.6C5.6 19 12 19 12 19s6.4 0 7.9-.5a2.5 2.5 0 0 0 1.6-1.6C22 15.4 22 12 22 12s0-3.4-.5-4.9a2.5 2.5 0 0 0-1.6-1.6C18.4 5 12 5 12 5s-6.4 0-7.9.5A2.5 2.5 0 0 0 2.5 7.1z"/>
+          <path d="M9.75 15.02l5.75-3.27-5.75-3.27v6.54z"/>
         </svg>
       ), url: site.youtube,
     },
     {
       key: 'linkedin', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.171C.525 0 0 .511 0 1.146v21.708c0 .635.525 1.146 1.171 1.146h21.054c.65 0 1.175-.511 1.175-1.146V1.146c0-.635-.525-1.146-1.175-1.146z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+          <rect width="4" height="12" x="2" y="9"/>
+          <circle cx="4" cy="4" r="2"/>
         </svg>
       ), url: site.linkedin,
     },
     {
       key: 'telegram', icon: (
-        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-          <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.14.14-.24.24-.48.24l.19-2.85 5.17-4.67c.22-.19-.05-.3-.34-.11L9.63 13.23l-2.76-.86c-.6-.19-.611-.6.125-.89l10.78-4.16c.5-.19.93.1.75.901z"/>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <path d="m22 2-7 20-4-9-9-4Z"/>
+          <path d="M22 2 11 13"/>
         </svg>
       ), url: site.telegram,
     },
@@ -98,7 +106,7 @@ export default function Footer({ site }: FooterProps) {
                 {socials.map((s) => (
                   <a
                     key={s.key}
-                    href={s.url}
+                    href={s.url as string}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="w-10 h-10 rounded-full flex items-center justify-center transition-all hover:scale-110"
@@ -166,9 +174,9 @@ export default function Footer({ site }: FooterProps) {
         {/* Bottom */}
         <div className="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
           style={{ borderTop: '1px solid var(--border)', color: 'var(--muted)' }}>
-          <span>© {new Date().getFullYear()} {site.businessName?.length > 100 ? site.businessName.substring(0, 50) + '...' : site.businessName} — {t('allRightsReserved', UI_LABELS)}</span>
+          <span>&copy; {new Date().getFullYear()} {site.businessName?.length > 100 ? site.businessName.substring(0, 50) + '...' : site.businessName} - {t('allRightsReserved', UI_LABELS)}</span>
           <a href="https://ruaadalraqamia.com/" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity hover:text-[var(--primary)] font-medium">
-            صمم بواسطة رواد الرقمية
+            تصميم وتطوير رواد الرقمية
           </a>
         </div>
       </div>
