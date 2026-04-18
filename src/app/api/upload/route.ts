@@ -14,9 +14,9 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
     }
 
-    // Limit base64 size to 2MB to avoid huge database documents
-    if (file.size > 2 * 1024 * 1024) {
-      return NextResponse.json({ error: 'File too large for database storage (max 2MB)' }, { status: 400 });
+    // Limit base64 size to 4MB (client side should have shrunk it much more)
+    if (file.size > 4 * 1024 * 1024) {
+      return NextResponse.json({ error: 'File too large (max 4MB)' }, { status: 400 });
     }
 
     const buffer = await file.arrayBuffer();

@@ -14,11 +14,43 @@ export default function ImageUpload({ value, onChange, label = 'صورة', folde
   const [drag, setDrag] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const compressImage = (file: File): Promise<Blob> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        const img = new Image();
+        img.src = e.target?.result as string;
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          
+          const MAX_WIDTH = 1200;
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx?.drawImage(img, 0, 0, width, height);
+          
+          canvas.toBlob((blob) => {
+            resolve(blob || file);
+          }, 'image/jpeg', 0.7);
+        };
+      };
+    });
+  };
+
   const upload = useCallback(async (file: File) => {
     setUploading(true);
     try {
+      const compressedBlob = await compressImage(file);
       const fd = new FormData();
-      fd.append('file', file);
+      fd.append('file', compressedBlob, 'image.jpg');
       fd.append('folder', folder);
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
       
