@@ -53,6 +53,39 @@ export default function CoverSection({ site }: CoverSectionProps) {
     }
   };
 
+  const getMediaUrl = (url: string) => {
+    if (!url) return '';
+    // Handle Google Drive links
+    if (url.includes('drive.google.com')) {
+      const id = url.split('/d/')[1]?.split('/')[0] || url.split('id=')[1]?.split('&')[0];
+      if (id) return `https://docs.google.com/uc?export=download&id=${id}`;
+    }
+    return url;
+  };
+
+  const isYouTube = (url: string) => {
+    return url.includes('youtube.com') || url.includes('youtu.be');
+  };
+
+  const getYouTubeId = (url: string) => {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  };
+
+  // Fallback timer for videos in case they don't trigger onEnded or are paused
+  useEffect(() => {
+    if (media.length <= 1) return;
+    const current = media[activeIndex];
+    
+    if (current && current.type === 'video') {
+      const timer = setTimeout(() => {
+        setActiveIndex((prev) => (prev + 1) % media.length);
+      }, 30000); // Max 30 seconds per video before switching if something goes wrong
+      return () => clearTimeout(timer);
+    }
+  }, [activeIndex, media]);
+
   return (
     <section className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center overflow-hidden">
       {/* Background Media */}
@@ -67,17 +100,28 @@ export default function CoverSection({ site }: CoverSectionProps) {
               >
                 {item.type === 'image' ? (
                   <Image
-                    src={item.url}
+                    src={getMediaUrl(item.url)}
                     alt={`cover-${index}`}
                     fill
                     className={`object-cover transition-transform duration-[20s] ease-linear ${isActive ? 'scale-110' : 'scale-100'}`}
                     priority={index === 0}
                   />
+                ) : isYouTube(item.url) ? (
+                  <div className="w-full h-full">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${getYouTubeId(item.url)}?autoplay=1&mute=1&controls=0&loop=1&playlist=${getYouTubeId(item.url)}&showinfo=0&rel=0`}
+                      className="w-full h-full pointer-events-none"
+                      style={{ transform: 'scale(1.5)' }} // Zoom in to hide black bars if any
+                      allow="autoplay; encrypted-media"
+                      frameBorder="0"
+                    />
+                  </div>
                 ) : (
                   <video 
-                    src={item.url} 
+                    src={getMediaUrl(item.url)} 
                     autoPlay={isActive} 
                     muted 
+                    loop={media.length === 1}
                     playsInline 
                     onEnded={isActive ? handleVideoEnded : undefined}
                     className="w-full h-full object-cover"
