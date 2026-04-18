@@ -80,7 +80,7 @@ export default function ItemsSection({ categories, items, site, activeCategory }
               </div>
               <div>
                 <h2 className="text-2xl font-black" style={{ color: 'var(--foreground)' }}>
-                  {catLabels[cat.id] || cat.name}
+                  {catLabels[cat.id]?.length > 50 ? catLabels[cat.id].substring(0, 40) + '...' : (catLabels[cat.id] || (cat.name?.length > 50 ? cat.name.substring(0, 40) + '...' : cat.name))}
                 </h2>
                 <div className="flex items-center gap-2 mt-1">
                    <div className="w-8 h-1 rounded-full bg-[var(--primary)]" />

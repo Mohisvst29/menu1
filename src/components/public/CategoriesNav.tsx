@@ -67,7 +67,7 @@ export default function CategoriesNav({ categories, activeId, onSelect }: Catego
                   <span>{cat.icon}</span>
                 )
               )}
-              <span>{labels[cat.id] || cat.name}</span>
+              <span>{labels[cat.id]?.length > 50 ? labels[cat.id].substring(0, 40) + '...' : (labels[cat.id] || (cat.name?.length > 50 ? cat.name.substring(0, 40) + '...' : cat.name))}</span>
             </button>
           );
         })}
