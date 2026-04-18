@@ -25,7 +25,11 @@ export async function GET() {
     if (!config) {
       return NextResponse.json({ businessName: 'My Business', theme: { primaryColor: '#f97316' } });
     }
-    return NextResponse.json(config);
+    return NextResponse.json(config, {
+      headers: {
+        'Cache-Control': 's-maxage=60, stale-while-revalidate=300'
+      }
+    });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

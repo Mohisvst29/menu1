@@ -27,7 +27,11 @@ export async function GET() {
        }
     }
 
-    return NextResponse.json({ categories, items });
+    return NextResponse.json({ categories, items }, {
+      headers: {
+        'Cache-Control': 's-maxage=60, stale-while-revalidate=300'
+      }
+    });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }

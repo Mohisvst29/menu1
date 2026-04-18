@@ -37,7 +37,7 @@ const SiteConfigSchema = new Schema({
 
 // 2. Category Schema
 const CategorySchema = new Schema({
-  id: { type: String, required: true, unique: true },
+  id: { type: String, required: true, unique: true, index: true },
   name: { type: String, required: true },
   icon: String,
   order: { type: Number, default: 0 }
@@ -45,8 +45,8 @@ const CategorySchema = new Schema({
 
 // 3. Item Schema
 const ItemSchema = new Schema({
-  id: { type: String, required: true, unique: true },
-  categoryId: { type: String, required: true },
+  id: { type: String, required: true, unique: true, index: true },
+  categoryId: { type: String, required: true, index: true },
   title: { type: String, required: true },
   description: String,
   price: String,
@@ -54,24 +54,24 @@ const ItemSchema = new Schema({
   extraInfoLabel: String,
   extraInfoValue: String,
   badge: { type: String, default: '' },
-  isAvailable: { type: Boolean, default: true },
-  isPopular: { type: Boolean, default: false }
+  isAvailable: { type: Boolean, default: true, index: true },
+  isPopular: { type: Boolean, default: false, index: true }
 });
 
 // 4. OfferBanner Schema
 const OfferBannerSchema = new Schema({
-  id: { type: String, required: true, unique: true },
+  id: { type: String, required: true, unique: true, index: true },
   title: { type: String, required: true },
   description: String,
   image: String,
   linkUrl: String,
-  isActive: { type: Boolean, default: true }
+  isActive: { type: Boolean, default: true, index: true }
 });
 
 // 5. Order Schema
 const OrderSchema = new Schema({
-  id: { type: String, required: true, unique: true },
-  date: { type: Date, default: Date.now },
+  id: { type: String, required: true, unique: true, index: true },
+  date: { type: Date, default: Date.now, index: true },
   customer: {
     name: String,
     phone: String,
@@ -89,7 +89,7 @@ const OrderSchema = new Schema({
     }
   ],
   totalAmount: Number,
-  status: { type: String, default: 'pending' }
+  status: { type: String, default: 'pending', index: true }
 });
 
 export const SiteConfigModel = models.SiteConfig || model('SiteConfig', SiteConfigSchema);

@@ -77,10 +77,29 @@ export default function PublicCatalog() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#080810]">
-        <div className="flex flex-col items-center gap-4 text-white">
-          <div className="w-12 h-12 rounded-full border-4 border-orange-500 border-t-transparent animate-spin" />
-          <p className="text-sm font-medium animate-pulse">جاري الاتصال بقاعدة البيانات...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#050505] p-6">
+        <div className="relative w-full max-w-xs flex flex-col items-center">
+          {/* Outer glow circle */}
+          <div className="absolute inset-0 w-32 h-32 m-auto rounded-full bg-orange-500/20 blur-3xl animate-pulse" />
+          
+          {/* Animated Spinner with Gradient */}
+          <div className="relative w-24 h-24 mb-8">
+             <div className="absolute inset-0 rounded-full border-[3px] border-white/5" />
+             <div className="absolute inset-0 rounded-full border-t-[3px] border-orange-500 animate-spin" style={{ animationDuration: '0.8s' }} />
+             <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-2xl animate-bounce">✨</span>
+             </div>
+          </div>
+
+          <div className="text-center space-y-3 relative">
+            <h2 className="text-xl font-bold text-white tracking-wide">جاري تحضير القائمة</h2>
+            <div className="flex items-center justify-center gap-1.5">
+               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style={{ animationDelay: '0s' }} />
+               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style={{ animationDelay: '0.2s' }} />
+               <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-bounce" style={{ animationDelay: '0.4s' }} />
+            </div>
+            <p className="text-xs text-gray-400 font-medium opacity-80 pt-4 uppercase tracking-[0.2em]">Premium Dining Experience</p>
+          </div>
         </div>
       </div>
     );
