@@ -73,12 +73,12 @@ const OrderSchema = new Schema({
   id: { type: String, required: true, unique: true, index: true },
   date: { type: Date, default: Date.now, index: true },
   customer: {
-    name: String,
-    phone: String,
-    address: String,
-    notes: String,
-    type: String, // dineIn, takeaway
-    tableNum: String
+    name: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    address: { type: String, default: '' },
+    notes: { type: String, default: '' },
+    type: { type: String, default: 'takeaway' },
+    tableNum: { type: String, default: '' }
   },
   items: [
     {
@@ -88,7 +88,7 @@ const OrderSchema = new Schema({
       quantity: Number
     }
   ],
-  totalAmount: Number,
+  totalAmount: { type: Number, default: 0 },
   status: { type: String, default: 'pending', index: true }
 });
 

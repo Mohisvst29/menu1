@@ -46,7 +46,26 @@ export default function SettingsPage() {
   }, [router]);
 
   const update = (key: keyof SiteConfig, value: string) => {
-    setSite((prev) => prev ? { ...prev, [key]: value } : prev);
+    // Safety check: prevent pasting huge base64 strings into text fields
+    if (value.length > 1000 && value.startsWith('data:image')) {
+      alert('⚠️ تنبيه: يبدو أنك تحاول لصق كود صورة في حقل نصي. يرجى التأكد من إدخال نص فقط.');
+      return;
+    }
+
+    // Individual length limits
+    const limits: Partial<Record<keyof SiteConfig, number>> = {
+      businessName: 100,
+      phone: 25,
+      whatsappNumber: 25,
+      workingHours: 100,
+      address: 200,
+      description: 500,
+    };
+
+    const limit = limits[key];
+    const finalValue = limit && value.length > limit ? value.substring(0, limit) : value;
+
+    setSite((prev) => prev ? { ...prev, [key]: finalValue } : prev);
   };
 
   const updateNested = (parent: keyof SiteConfig, key: string, value: string) => {

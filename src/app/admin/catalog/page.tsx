@@ -82,6 +82,15 @@ export default function CatalogPage() {
     }
   };
 
+  const cleanInput = (val: string, limit: number, label: string) => {
+    if (!val) return '';
+    if (val.length > 500 && val.startsWith('data:image')) {
+      alert(`⚠️ تنبيه: تم رصد كود صورة في حقل "${label}". يرجى إدخال نص فقط.`);
+      return val.substring(0, limit);
+    }
+    return val.length > limit ? val.substring(0, limit) : val;
+  };
+
   // ─── Items ───
   const openAddItem = () => {
     setEditItem(null);
@@ -97,11 +106,22 @@ export default function CatalogPage() {
 
   const saveItem = () => {
     if (!itemForm.title) return;
+
+    // Sanitize inputs
+    const cleanedItem = {
+      ...itemForm,
+      title: cleanInput(itemForm.title, 100, 'اسم المنتج'),
+      description: cleanInput(itemForm.description, 300, 'وصف المنتج'),
+      price: cleanInput(itemForm.price, 25, 'السعر'),
+      extraInfoLabel: cleanInput(itemForm.extraInfoLabel, 50, 'تسمية المعلومة'),
+      extraInfoValue: cleanInput(itemForm.extraInfoValue, 50, 'قيمة المعلومة'),
+    };
+
     let newItems: Item[];
     if (editItem) {
-      newItems = data.items.map((i) => i.id === editItem.id ? { ...itemForm, id: editItem.id } : i);
+      newItems = data.items.map((i) => i.id === editItem.id ? { ...cleanedItem, id: editItem.id } : i);
     } else {
-      newItems = [...data.items, { ...itemForm, id: `item-${Date.now()}` }];
+      newItems = [...data.items, { ...cleanedItem, id: `item-${Date.now()}` }];
     }
     const newData = { ...data, items: newItems };
     setData(newData);
@@ -137,11 +157,18 @@ export default function CatalogPage() {
 
   const saveCat = () => {
     if (!catForm.name) return;
+
+    // Sanitize inputs
+    const cleanedCat = {
+      ...catForm,
+      name: cleanInput(catForm.name, 100, 'اسم التصنيف'),
+    };
+
     let newCats: Category[];
     if (editCat) {
-      newCats = data.categories.map((c) => c.id === editCat.id ? { ...c, ...catForm } : c);
+      newCats = data.categories.map((c) => c.id === editCat.id ? { ...c, ...cleanedCat } : c);
     } else {
-      newCats = [...data.categories, { ...catForm, id: `cat-${Date.now()}` }];
+      newCats = [...data.categories, { ...cleanedCat, id: `cat-${Date.now()}` }];
     }
     const newData = { ...data, categories: newCats };
     setData(newData);
@@ -238,7 +265,7 @@ export default function CatalogPage() {
                         )}
                         <div className="p-4">
                           <div className="flex items-start gap-2 mb-1">
-                            <span className="font-bold text-sm flex-1">{item.title}</span>
+                            <span className="font-bold text-sm flex-1">{item.title?.length > 100 ? item.title.substring(0, 80) + '...' : item.title}</span>
                             {item.badge && (
                               <span className="text-xs px-2 py-0.5 rounded-full flex-shrink-0"
                                 style={{ background: item.badge === 'new' ? '#3b82f620' : '#f9731620', color: item.badge === 'new' ? '#60a5fa' : '#fb923c' }}>
@@ -306,7 +333,7 @@ export default function CatalogPage() {
                           )}
                         </span>
                         <div className="flex-1 min-w-0">
-                          <p className="font-semibold text-sm text-white">{cat.name}</p>
+                          <p className="font-semibold text-sm text-white">{cat.name?.length > 100 ? cat.name.substring(0, 80) + '...' : cat.name}</p>
                           <p className="text-xs" style={{ color: '#6b7280' }}>{count} منتج</p>
                         </div>
                         <div className="flex items-center gap-2">

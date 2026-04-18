@@ -102,7 +102,7 @@ export default function ItemCard({ item, site, view = 'grid' }: ItemCardProps) {
       <div className={`card-body p-4 md:p-5 flex flex-col ${isList ? 'border-s' : ''}`} style={{ borderColor: 'var(--border)' }}>
         <div className="flex justify-between items-start gap-3 mb-2">
           <h3 className="font-extrabold text-base md:text-lg leading-tight text-[var(--foreground)] group-hover:text-[var(--primary)] transition-colors line-clamp-2">
-            {title}
+            {title?.length > 100 ? title.substring(0, 80) + '...' : title}
           </h3>
           {/* Price pinned to top right in list view */}
           {isList && item.price && (
@@ -114,7 +114,7 @@ export default function ItemCard({ item, site, view = 'grid' }: ItemCardProps) {
 
         {desc && (
           <p className="text-[13px] md:text-sm leading-relaxed text-[var(--muted)] line-clamp-2 mb-3">
-            {desc}
+            {desc?.length > 200 ? desc.substring(0, 180) + '...' : desc}
           </p>
         )}
 
