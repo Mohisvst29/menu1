@@ -13,16 +13,21 @@ export default function OffersPopup() {
   useEffect(() => {
     if (pathname.startsWith('/admin')) return;
     fetch('/api/site')
-      .then(r => r.json())
+      .then(r => {
+        if (!r.ok) return null;
+        return r.json();
+      })
       .then(data => {
+        if (!data || data.error) return;
         setSite(data);
         // Show after 2 seconds
         const timer = setTimeout(() => {
           setShow(true);
         }, 2000);
         return () => clearTimeout(timer);
-      });
-  }, []);
+      })
+      .catch(() => console.log('OffersPopup: Failed to fetch site config'));
+  }, [pathname]);
 
   if (!show || !site) return null;
 

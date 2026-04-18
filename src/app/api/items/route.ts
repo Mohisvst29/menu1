@@ -1,12 +1,32 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import { CategoryModel, ItemModel } from '@/lib/models';
+import { getItemsData } from '@/lib/data';
+
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {
     await dbConnect();
-    const categories = await CategoryModel.find().sort({ order: 1 }).lean();
-    const items = await ItemModel.find().lean();
+    
+    let categories = await CategoryModel.find().sort({ order: 1 }).lean();
+    let items = await ItemModel.find().lean();
+
+    // Auto-migration
+    if (categories.length === 0 && items.length === 0) {
+       try {
+         const local = getItemsData();
+         if (local.categories.length > 0 || local.items.length > 0) {
+            await CategoryModel.insertMany(local.categories);
+            await ItemModel.insertMany(local.items);
+            categories = await CategoryModel.find().sort({ order: 1 }).lean();
+            items = await ItemModel.find().lean();
+         }
+       } catch (e) {
+         console.log('No local items.json found');
+       }
+    }
+
     return NextResponse.json({ categories, items });
   } catch (err: any) {
     return NextResponse.json({ error: err.message }, { status: 500 });

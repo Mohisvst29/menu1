@@ -16,6 +16,7 @@ export default function PublicCatalog() {
   const [catalog, setCatalog] = useState<ItemsData | null>(null);
   const [activeCategory, setActiveCategory] = useState('all');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Apply dynamic variables from setting
   useEffect(() => {
@@ -49,29 +50,61 @@ export default function PublicCatalog() {
   }, [catalog]);
 
   useEffect(() => {
-    Promise.all([
-      fetch('/api/site').then((r) => r.json()),
-      fetch('/api/items').then((r) => r.json()),
-    ]).then(([siteData, itemsData]) => {
-      setSite(siteData);
-      setCatalog(itemsData);
-    }).finally(() => setLoading(false));
+    const load = async () => {
+      try {
+        const [sRes, iRes] = await Promise.all([
+          fetch('/api/site'),
+          fetch('/api/items')
+        ]);
+        
+        if (!sRes.ok || !iRes.ok) throw new Error('فشل الطلب البرمجي');
+        
+        const sData = await sRes.json();
+        const iData = await iRes.json();
+        
+        if (sData.error || iData.error) throw new Error(sData.error || iData.error);
+        
+        setSite(sData);
+        setCatalog(iData);
+      } catch (err: any) {
+        setError(err.message || 'حدث خطأ في الاتصال بقاعدة البيانات');
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
   }, []);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center"
-        style={{ background: 'var(--background)' }}>
-        <div className="flex flex-col items-center gap-4">
-          <div className="w-12 h-12 rounded-full border-2 border-t-transparent animate-spin"
-            style={{ borderColor: 'var(--primary)', borderTopColor: 'transparent' }} />
-          <p className="text-sm" style={{ color: 'var(--muted)' }}>جاري التحميل...</p>
+      <div className="min-h-screen flex items-center justify-center bg-[#080810]">
+        <div className="flex flex-col items-center gap-4 text-white">
+          <div className="w-12 h-12 rounded-full border-4 border-orange-500 border-t-transparent animate-spin" />
+          <p className="text-sm font-medium animate-pulse">جاري الاتصال بقاعدة البيانات...</p>
         </div>
       </div>
     );
   }
 
-  if (!site || !catalog) return null;
+  if (error || !site || !catalog) {
+     return (
+        <div className="min-h-screen flex flex-col items-center justify-center bg-[#080810] text-white p-6 text-center">
+          <div className="text-5xl mb-6">⚠️</div>
+          <h1 className="text-2xl font-bold mb-3">عذراً، تعذر تحميل المنيو</h1>
+          <p className="text-gray-400 text-sm max-w-sm leading-relaxed mb-8">
+            {error || 'لم نتمكن من جلب بيانات المنيو حالياً.'}
+            <br />
+            <span className="text-orange-400/80 mt-3 block">إذا كنت المالك: تأكد من السماح لجميع الـ IP في MongoDB Atlas.</span>
+          </p>
+          <button 
+            onClick={() => window.location.reload()} 
+            className="px-8 py-3 bg-gradient-to-r from-orange-500 to-pink-500 rounded-2xl font-bold shadow-lg shadow-orange-500/20 active:scale-95 transition-all"
+          >
+            إعادة المحاولة
+          </button>
+        </div>
+     );
+  }
 
   return (
     <main style={{ background: 'var(--background)', minHeight: '100vh' }}>

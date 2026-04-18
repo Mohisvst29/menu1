@@ -13,10 +13,11 @@ export default function ThemeManager() {
 
     // 2. Fetch site config
     fetch('/api/site')
-      .then(r => r.json())
-      .then((site: SiteConfig) => {
-        applyTheme(site, localTheme);
-      });
+      .then(r => r.ok ? r.json() : null)
+      .then((site: SiteConfig | null) => {
+        if (site) applyTheme(site, localTheme);
+      })
+      .catch(() => {});
 
     // Handle cross-tab changes
     window.addEventListener('storage', (e) => {

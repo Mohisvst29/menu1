@@ -21,11 +21,22 @@ export default function ImageUpload({ value, onChange, label = 'صورة', folde
       fd.append('file', file);
       fd.append('folder', folder);
       const res = await fetch('/api/upload', { method: 'POST', body: fd });
-      const data = await res.json();
-      if (data.url) onChange(data.url);
-      else alert('فشل رفع الصورة: ' + (data.error || 'خطأ غير معروف'));
-    } catch {
-      alert('فشل رفع الصورة');
+      
+      let data;
+      try {
+        data = await res.json();
+      } catch (e) {
+        throw new Error(`خطأ في السيرفر: ${res.status}`);
+      }
+
+      if (data.url) {
+        onChange(data.url);
+      } else {
+        alert('فشل رفع الصورة: ' + (data.error || 'خطأ غير معروف'));
+      }
+    } catch (err: any) {
+      console.error('Upload catch:', err);
+      alert('فشل رفع الصورة: ' + err.message);
     } finally {
       setUploading(false);
     }
