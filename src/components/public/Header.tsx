@@ -77,7 +77,7 @@ export default function Header({ site }: HeaderProps) {
             </div>
           )}
           <span className="font-bold text-lg truncate text-white drop-shadow-lg">
-            {site.businessName}
+            {site.businessName?.length > 100 ? site.businessName.substring(0, 50) + '...' : site.businessName}
           </span>
         </div>
 

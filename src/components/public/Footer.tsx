@@ -56,7 +56,7 @@ export default function Footer({ site }: FooterProps) {
           {/* Brand */}
           <div>
             <h3 className="text-xl font-black mb-3" style={{ color: 'var(--foreground)' }}>
-              {site.businessName}
+              {site.businessName?.length > 100 ? site.businessName.substring(0, 50) + '...' : site.businessName}
             </h3>
             {site.description && (
               <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>
@@ -138,7 +138,7 @@ export default function Footer({ site }: FooterProps) {
         {/* Bottom */}
         <div className="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs"
           style={{ borderTop: '1px solid var(--border)', color: 'var(--muted)' }}>
-          <span>© {new Date().getFullYear()} {site.businessName} — {t('allRightsReserved', UI_LABELS)}</span>
+          <span>© {new Date().getFullYear()} {site.businessName?.length > 100 ? site.businessName.substring(0, 50) + '...' : site.businessName} — {t('allRightsReserved', UI_LABELS)}</span>
           <a href="https://ruaadalraqamia.com/" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity hover:text-[var(--primary)] font-medium">
             صمم بواسطة رواد الرقمية
           </a>
