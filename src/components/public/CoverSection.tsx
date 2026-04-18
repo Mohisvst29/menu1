@@ -62,7 +62,7 @@ export default function CoverSection({ site }: CoverSectionProps) {
         </div>
 
         <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight text-white tracking-tight drop-shadow-2xl">
-          {name}
+          {name && name.length < 100 ? name : site.businessName?.substring(0, 30)}
         </h1>
 
         {desc && (

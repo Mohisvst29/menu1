@@ -69,10 +69,14 @@ export default function ItemsSection({ categories, items, site, activeCategory }
         return (
           <div key={cat.id} id={`cat-section-${cat.id}`} className="mb-14 scroll-mt-32">
             {/* Section Header */}
-            <div className="flex items-center gap-4 mb-8">
-              <div className="flex items-center justify-center w-12 h-12 rounded-2xl text-2xl shadow-lg"
+              <div className="flex items-center justify-center w-12 h-12 rounded-2xl text-2xl shadow-lg overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, rgba(249,115,22,0.15), rgba(249,115,22,0.05))', border: '1px solid rgba(249,115,22,0.3)' }}>
-                {cat.icon}
+                {cat.icon?.startsWith('http') || cat.icon?.startsWith('data:') || cat.icon?.startsWith('/') ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={cat.icon} alt={cat.name} className="w-full h-full object-cover" />
+                ) : (
+                  cat.icon
+                )}
               </div>
               <div>
                 <h2 className="text-2xl font-black" style={{ color: 'var(--foreground)' }}>
