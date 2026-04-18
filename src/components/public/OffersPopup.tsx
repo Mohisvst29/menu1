@@ -29,7 +29,56 @@ export default function OffersPopup() {
       .catch(() => console.log('OffersPopup: Failed to fetch site config'));
   }, [pathname]);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   if (!show || !site) return null;
+
+  const handleOfferClick = async () => {
+    setIsSubmitting(true);
+    try {
+      // 1. Create a dummy order for the offer
+      const offerTitle = site.offersTitle || 'طلب عرض خاص';
+      const payload = {
+        customer: {
+          name: 'عميل مهتم بالعرض',
+          phone: '',
+          address: '',
+          notes: `المستخدم طلب العرض: ${offerTitle}`,
+          type: 'takeaway'
+        },
+        items: [{
+          itemId: 'OFFER',
+          title: offerTitle,
+          price: 0,
+          quantity: 1
+        }],
+        totalAmount: 0
+      };
+
+      const res = await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      const orderId = data.orderId || 'NEW';
+
+      // 2. Open WhatsApp
+      const msg = `*رقم الاستفسار: ${orderId}*\n\nمرحباً، أريد الاستفسار عن العرض المتاحة: ${offerTitle}`;
+      const link = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent(msg)}`;
+      window.open(link, '_blank');
+      
+      setShow(false);
+    } catch (err) {
+      console.error('Offer order error', err);
+      // Fallback to direct link if API fails
+      const link = `https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent('مرحباً، أريد الاستفسار عن العرض المتاحة: ' + (site.offersTitle || ''))}`;
+      window.open(link, '_blank');
+      setShow(false);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/60 backdrop-blur-sm animate-in fade-in duration-500">
@@ -58,15 +107,13 @@ export default function OffersPopup() {
           </p>
 
           <div className="pt-4 flex flex-col gap-3">
-            <a 
-              href={`https://wa.me/${site.whatsappNumber}?text=${encodeURIComponent('مرحباً، أريد الاستفسار عن العروض المتاحة: ' + (site.offersTitle || ''))}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setShow(false)}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold text-lg shadow-lg shadow-orange-500/20 hover:scale-105 active:scale-95 transition-all text-center"
+            <button
+              onClick={handleOfferClick}
+              disabled={isSubmitting}
+              className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-500 to-pink-500 text-white font-bold text-lg shadow-lg shadow-orange-500/20 hover:scale-105 active:scale-95 transition-all text-center disabled:opacity-70"
             >
-              اطلب العرض عبر واتساب 💬
-            </a>
+              {isSubmitting ? 'جاري التحميل...' : 'اطلب العرض عبر واتساب 💬'}
+            </button>
             <Link 
               href="/offers"
               onClick={() => setShow(false)}
