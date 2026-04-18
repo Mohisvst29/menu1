@@ -1,0 +1,26 @@
+{
+  "businessName": "كافيه ايلا",
+  "description": "كافيه ايلا",
+  "logo": "/logos/1776509467110-otxctcktpe.png",
+  "coverImage": "/covers/1776508423848-6m0qi9p0wbh.jpeg",
+  "whatsappNumber": "00966541430116",
+  "address": "العنوان - المدينة",
+  "workingHours": "9:00 ص - 10:00 م",
+  "phone": "0541430116",
+  "instagram": "",
+  "twitter": "",
+  "facebook": "",
+  "snapchat": "",
+  "theme": {
+    "primaryColor": "#15f9de",
+    "secondaryColor": "#bcafa4",
+    "backgroundColor": "#c5b4b4",
+    "textColor": "#f1f5f9",
+    "cardBackgroundColor": "#818183",
+    "buttonColor": "#f97316",
+    "headerBackgroundColor": "#48d50b",
+    "footerBackgroundColor": "#c40808"
+  },
+  "logoSize": "175",
+  "themeMode": "light"
+}

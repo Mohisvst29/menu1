@@ -1,0 +1,76 @@
+{
+  "categories": [
+    {
+      "id": "cat-1",
+      "name": "المشروبات الساخنة",
+      "icon": "",
+      "order": 1
+    },
+    {
+      "id": "cat-2",
+      "name": "المشروبات الباردة",
+      "icon": "🥤",
+      "order": 2
+    },
+    {
+      "id": "cat-3",
+      "name": "الحلويات",
+      "icon": "🍰",
+      "order": 3
+    }
+  ],
+  "items": [
+    {
+      "id": "item-1",
+      "categoryId": "cat-1",
+      "title": "قهوة عربية",
+      "description": "قهوة عربية أصيلة بالهيل والزعفران",
+      "price": "15",
+      "image": "",
+      "extraInfoLabel": "الحجم",
+      "extraInfoValue": "250 مل",
+      "badge": "popular",
+      "isAvailable": true,
+      "isPopular": true
+    },
+    {
+      "id": "item-2",
+      "categoryId": "cat-1",
+      "title": "قهوة تركية",
+      "description": "قهوة تركية غنية بالطعم",
+      "price": "12",
+      "image": "",
+      "extraInfoLabel": "السعرات",
+      "extraInfoValue": "45 كالوري",
+      "badge": "",
+      "isAvailable": true,
+      "isPopular": false
+    },
+    {
+      "id": "item-3",
+      "categoryId": "cat-2",
+      "title": "ليمون بالنعناع",
+      "description": "عصير ليمون طازج مع النعناع والثلج",
+      "price": "18",
+      "image": "",
+      "extraInfoLabel": "الحجم",
+      "extraInfoValue": "500 مل",
+      "badge": "new",
+      "isAvailable": true,
+      "isPopular": false
+    },
+    {
+      "id": "item-4",
+      "categoryId": "cat-3",
+      "title": "كنافة بالقشطة",
+      "description": "كنافة ناعمة محشوة بالقشطة الطازجة",
+      "price": "25",
+      "image": "",
+      "extraInfoLabel": "الحجم",
+      "extraInfoValue": "قطعة واحدة",
+      "badge": "popular",
+      "isAvailable": true,
+      "isPopular": true
+    }
+  ]
+}

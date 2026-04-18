@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ORD-1000",
+    "date": "2026-04-18T11:02:37.794Z",
+    "customer": {
+      "name": "محمد",
+      "phone": "0541430116",
+      "address": "",
+      "notes": "عايز سكر زياده ",
+      "type": "dineIn",
+      "tableNum": "1"
+    },
+    "items": [
+      {
+        "itemId": "item-1",
+        "title": "قهوة عربية",
+        "price": "15",
+        "quantity": 3
+      }
+    ],
+    "totalAmount": 45,
+    "status": "preparing"
+  }
+]
