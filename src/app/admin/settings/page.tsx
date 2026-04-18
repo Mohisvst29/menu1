@@ -47,9 +47,11 @@ export default function SettingsPage() {
 
   const update = (key: keyof SiteConfig, value: string) => {
     // Safety check: prevent pasting huge base64 strings into text fields
-    if (value.length > 1000 && value.startsWith('data:image')) {
-      alert('⚠️ تنبيه: يبدو أنك تحاول لصق كود صورة في حقل نصي. يرجى التأكد من إدخال نص فقط.');
-      return;
+    if (key !== 'logo' && key !== 'coverImage') {
+      if (typeof value === 'string' && value.length > 1000 && value.startsWith('data:image')) {
+        alert('⚠️ تنبيه: يبدو أنك تحاول لصق كود صورة في حقل نصي. يرجى التأكد من إدخال نص فقط.');
+        return;
+      }
     }
 
     // Individual length limits

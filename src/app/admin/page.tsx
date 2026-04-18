@@ -25,6 +25,7 @@ export default function AdminDashboardPage() {
   const router = useRouter();
   const [site, setSite] = useState<SiteConfig | null>(null);
   const [catalog, setCatalog] = useState<ItemsData | null>(null);
+  const [ordersCount, setOrdersCount] = useState<number>(0);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
@@ -35,7 +36,14 @@ export default function AdminDashboardPage() {
     Promise.all([
       fetch('/api/site').then((r) => r.json()),
       fetch('/api/items').then((r) => r.json()),
-    ]).then(([s, c]) => { setSite(s); setCatalog(c); });
+      fetch('/api/orders').then((r) => r.json()),
+    ]).then(([s, c, o]) => {
+      setSite(s);
+      setCatalog(c);
+      if (Array.isArray(o)) {
+        setOrdersCount(o.length);
+      }
+    });
   }, [router]);
 
   const availableItems = catalog?.items.filter((i) => i.isAvailable !== false).length ?? 0;

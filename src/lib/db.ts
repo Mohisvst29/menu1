@@ -2,30 +2,41 @@ import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI || '';
 
-let isConnected = false;
+let cached = (global as any).mongoose;
+
+if (!cached) {
+  cached = (global as any).mongoose = { conn: null, promise: null };
+}
 
 async function dbConnect() {
-  if (isConnected) {
-    console.log('Using existing MongoDB connection');
-    return;
+  if (cached.conn) {
+    return cached.conn;
   }
 
   if (!MONGODB_URI) {
     throw new Error('MONGODB_URI is missing in .env.local');
   }
 
-  try {
+  if (!cached.promise) {
     console.log('Connecting to MongoDB...');
-    const db = await mongoose.connect(MONGODB_URI, {
+    cached.promise = mongoose.connect(MONGODB_URI, {
+      bufferCommands: false,
       connectTimeoutMS: 10000, // 10 seconds
       serverSelectionTimeoutMS: 10000,
+    }).then((m) => {
+      console.log('MongoDB Connected successfully');
+      return m;
     });
-    isConnected = !!db.connections[0].readyState;
-    console.log('MongoDB Connected successfully');
-  } catch (error) {
-    console.error('MongoDB Connection Error:', error);
-    throw error;
   }
+  
+  try {
+    cached.conn = await cached.promise;
+  } catch (e) {
+    cached.promise = null;
+    throw e;
+  }
+
+  return cached.conn;
 }
 
 export default dbConnect;
