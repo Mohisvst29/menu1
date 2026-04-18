@@ -67,7 +67,13 @@ export default function Cart({ site }: CartProps) {
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify(payload)
       });
+      
       const data = await res.json();
+      
+      if (!res.ok) {
+        throw new Error(data.error || 'Failed to save order to database');
+      }
+
       const orderId = data.orderId || 'NEW';
 
       // 2. Format cart text for WhatsApp

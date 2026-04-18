@@ -16,14 +16,19 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    console.log('Order POST request received');
     const body = await req.json();
+    console.log('Order body:', JSON.stringify(body).substring(0, 500));
+    
     await dbConnect();
+    console.log('DB connected for order save');
     
     // Generate Order ID ORD-XXXX based on count
     const count = await OrderModel.countDocuments();
+    console.log('Current order count:', count);
     const nextIdNumber = count + 1001;
     const newOrderId = `ORD-${nextIdNumber}`;
-
+    console.log('New generated OrderID:', newOrderId);
     const newOrder = {
       id: newOrderId,
       date: new Date().toISOString(),
@@ -40,12 +45,13 @@ export async function POST(req: Request) {
       status: 'pending'
     };
 
-    await OrderModel.create(newOrder);
+    const created = await OrderModel.create(newOrder);
+    console.log('Order created successfully in MongoDB:', created._id);
 
     return NextResponse.json({ success: true, orderId: newOrderId });
   } catch (error: any) {
-    console.error('Save order error', error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error('CRITICAL: Save order error:', error);
+    return NextResponse.json({ error: error.message || 'INTERNAL_SERVER_ERROR' }, { status: 500 });
   }
 }
 
