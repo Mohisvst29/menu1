@@ -127,10 +127,6 @@ export default function AdminLoginPage() {
             </button>
           </form>
         </div>
-
-        <p className="text-center text-xs mt-6" style={{ color: '#4b5563' }}>
-          الإيميل الافتراضي: admin@catalog.com · كلمة المرور: admin123
-        </p>
       </div>
     </div>
   );

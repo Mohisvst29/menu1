@@ -142,7 +142,7 @@ export default function Header({ site }: HeaderProps) {
               boxShadow: '0 4px 15px rgba(236,72,153,0.3)',
             }}
           >
-            <span className="hidden sm:inline">العروض</span> 🏷️
+            <span className="hidden sm:inline">{t('offers', UI_LABELS)}</span> 🏷️
           </a>
 
           {/* Cart Toggle */}

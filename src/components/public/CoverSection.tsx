@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useLang } from '@/context/LanguageContext';
+import { UI_LABELS } from '@/lib/i18n';
 import type { SiteConfig } from '@/types';
 
 interface CoverSectionProps {
@@ -10,7 +11,7 @@ interface CoverSectionProps {
 }
 
 export default function CoverSection({ site }: CoverSectionProps) {
-  const { translateText } = useLang();
+  const { translateText, t } = useLang();
   const [name, setName] = useState(site.businessName);
   const [desc, setDesc] = useState(site.description);
 
@@ -58,7 +59,7 @@ export default function CoverSection({ site }: CoverSectionProps) {
             color: 'var(--primary)',
           }}>
           <span className="w-2 h-2 rounded-full animate-pulse shadow-[0_0_10px_var(--primary)]" style={{ background: 'var(--primary)' }} />
-          القائمة الرقمية
+          {t('digitalMenu', UI_LABELS)}
         </div>
 
         <h1 className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight text-white tracking-tight drop-shadow-2xl">
@@ -73,7 +74,7 @@ export default function CoverSection({ site }: CoverSectionProps) {
 
         {/* Scroll cue */}
         <div className="mt-16 flex flex-col items-center gap-3 text-white/50 text-sm font-medium animate-bounce">
-          <span>اكتشف القائمة</span>
+          <span>{t('discoverMenu', UI_LABELS)}</span>
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
           </svg>

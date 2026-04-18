@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useLang } from '@/context/LanguageContext';
+import { UI_LABELS } from '@/lib/i18n';
 import type { Category } from '@/types';
 
 interface CategoriesNavProps {
@@ -11,7 +12,7 @@ interface CategoriesNavProps {
 }
 
 export default function CategoriesNav({ categories, activeId, onSelect }: CategoriesNavProps) {
-  const { translateText } = useLang();
+  const { translateText, t } = useLang();
   const [labels, setLabels] = useState<Record<string, string>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -48,7 +49,7 @@ export default function CategoriesNav({ categories, activeId, onSelect }: Catego
           onClick={() => onSelect('all')}
           className={`category-pill flex-shrink-0 ${activeId === 'all' ? 'active' : ''}`}
         >
-          🌟 الكل
+          🌟 {t('all', UI_LABELS)}
         </button>
 
         {categories.map((cat) => {

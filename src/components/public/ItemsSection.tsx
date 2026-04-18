@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useLang } from '@/context/LanguageContext';
+import { UI_LABELS } from '@/lib/i18n';
 import type { Category, Item, SiteConfig } from '@/types';
 import ItemCard from './ItemCard';
 
@@ -15,7 +16,7 @@ interface ItemsSectionProps {
 type ViewMode = 'grid' | 'list';
 
 export default function ItemsSection({ categories, items, site, activeCategory }: ItemsSectionProps) {
-  const { translateText } = useLang();
+  const { translateText, t } = useLang();
   const [catLabels, setCatLabels] = useState<Record<string, string>>({});
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
 
@@ -85,7 +86,7 @@ export default function ItemsSection({ categories, items, site, activeCategory }
                 <div className="flex items-center gap-2 mt-1">
                    <div className="w-8 h-1 rounded-full bg-[var(--primary)]" />
                    <p className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--muted)' }}>
-                     {catItems.length} {catItems.length === 1 ? 'عنصر' : 'عناصر'}
+                     {catItems.length} {catItems.length === 1 ? t('itemSng', UI_LABELS) : t('itemPlr', UI_LABELS)}
                    </p>
                 </div>
               </div>

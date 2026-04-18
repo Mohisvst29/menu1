@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/db';
 import { OrderModel } from '@/lib/models';
+import { getAdminConfig } from '@/lib/data';
 
 export const dynamic = 'force-dynamic';
 
@@ -70,3 +71,22 @@ export async function PUT(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const { password } = await req.json();
+    const admin = getAdminConfig();
+    
+    if (admin.password !== password) {
+      return NextResponse.json({ error: 'كلمة المرور غير صحيحة' }, { status: 401 });
+    }
+
+    await dbConnect();
+    await OrderModel.deleteMany({});
+    
+    return NextResponse.json({ success: true });
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
